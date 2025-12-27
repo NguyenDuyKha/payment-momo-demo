@@ -12,7 +12,7 @@ async function checkout() {
     return;
   }
 
-  const res = await fetch("http://localhost:3000/api/payment/momo", {
+  const res = await fetch("https://payment-momo-demo.vercel.app/api/payment/momo", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
