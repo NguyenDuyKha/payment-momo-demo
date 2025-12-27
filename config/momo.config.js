@@ -1,11 +1,11 @@
+require("dotenv").config();
+
 module.exports = {
-  partnerCode: "MOMO",
-  accessKey: "F8BBA842ECF85",
-  secretKey: "K951B6PE1waDMi640xX08PD3vg6EkVlz",
+  partnerCode: process.env.MOMO_PARTNER_CODE,
+  accessKey: process.env.MOMO_ACCESS_KEY,
+  secretKey: process.env.MOMO_SECRET_KEY,
 
-  endpoint: "https://test-payment.momo.vn/v2/gateway/api/create",
-
-  // Must be public URL when deployed
-  redirectUrl: "http://localhost:5500/frontend/index.html",
-  ipnUrl: "http://localhost:3000/api/payment/momo/ipn"
+  endpoint: process.env.MOMO_ENDPOINT,
+  redirectUrl: process.env.MOMO_REDIRECT_URL,
+  ipnUrl: process.env.MOMO_IPN_URL
 };
