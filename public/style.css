@@ -1,0 +1,25 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f9fafb;
+  padding: 40px;
+}
+
+.product, .cart {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+button {
+  background: #ec4899;
+  border: none;
+  padding: 10px 15px;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+button:hover {
+  background: #db2777;
+}
