@@ -1,19 +1,20 @@
-import express from "express";
-import cors from "cors";
-import paymentRoute from "../routes/payment.route.js";
+const express = require("express");
+const cors = require("cors");
+const paymentRoute = require("../routes/payment.route");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
-// API Routes
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static("public"));
+
 app.use("/api/payment", paymentRoute);
 
-// Health check
-app.get("/api", (req, res) => {
-  res.json({ status: "API is running" });
-});
-
-export default app;
+module.exports = app;

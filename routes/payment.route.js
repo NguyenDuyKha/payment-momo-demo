@@ -1,7 +1,8 @@
 const express = require("express");
-const router = express.Router();
 const { createPayment } = require("../services/momo.service");
 const { verifyMoMoSignature } = require("../utils/momo.verify");
+
+const router = express.Router();
 
 // Create payment
 router.post("/momo", async (req, res) => {
