@@ -1,15 +1,8 @@
 const express = require("express");
 const { createPayment } = require("../services/momo.service");
 const { verifyMoMoSignature } = require("../utils/momo.verify");
-
-const payments = [
-  {
-    "orderId": "MOMO1766921801829",
-    "resultCode": 0,
-    "message": "Successful.",
-    "amount": 50000
-  }
-];
+const connectDB = require("../config/mongodb");
+const Payment = require("../models/payment");
 
 const router = express.Router();
 
@@ -38,6 +31,8 @@ router.post("/momo", async (req, res) => {
 
 // ✅ MoMo IPN webhook
 router.post("/momo/ipn", async (req, res) => {
+  await connectDB();
+
   const isValid = verifyMoMoSignature(req.body);
 
   if (!isValid) {
@@ -54,11 +49,12 @@ router.post("/momo/ipn", async (req, res) => {
   } = req.body;
 
   // Add payments
-  payments.push({
+  await Payment.create({
     orderId,
+    amount,
     resultCode,
     message,
-    amount
+    raw: req.body
   });
 
   if (resultCode === 0) {
@@ -78,7 +74,9 @@ router.post("/momo/ipn", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  res.json(payments);
+  await connectDB();
+  const data = await Payment.find().sort({ createdAt: -1 });
+  res.json(data);
 });
 
 module.exports = router;
