@@ -2,7 +2,14 @@ const express = require("express");
 const { createPayment } = require("../services/momo.service");
 const { verifyMoMoSignature } = require("../utils/momo.verify");
 
-const fs = require('fs').promises;
+const payments = [
+  {
+    "orderId": "MOMO1766921801829",
+    "resultCode": 0,
+    "message": "Successful.",
+    "amount": 50000
+  }
+];
 
 const router = express.Router();
 
@@ -46,17 +53,13 @@ router.post("/momo/ipn", async (req, res) => {
     amount
   } = req.body;
 
-  // Add file
-  const data = await fs.readFile('../payments.json', 'utf8');
-  const payments = JSON.parse(data);
+  // Add payments
   payments.push({
     orderId,
     resultCode,
     message,
     amount
   });
-  await fs.writeFile('../payments.json', JSON.stringify(payments, null, 2));
-  // Add file
 
   if (resultCode === 0) {
     console.log("✅ Payment success:", {
@@ -75,8 +78,7 @@ router.post("/momo/ipn", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const data = await fs.readFile('../payments.json', 'utf8');
-  res.json(JSON.parse(data));
+  res.json(payments);
 });
 
 module.exports = router;
