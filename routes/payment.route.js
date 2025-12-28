@@ -2,6 +2,8 @@ const express = require("express");
 const { createPayment } = require("../services/momo.service");
 const { verifyMoMoSignature } = require("../utils/momo.verify");
 
+const fs = require('fs').promises;
+
 const router = express.Router();
 
 // Create payment
@@ -28,7 +30,7 @@ router.post("/momo", async (req, res) => {
 });
 
 // ✅ MoMo IPN webhook
-router.post("/momo/ipn", (req, res) => {
+router.post("/momo/ipn", async (req, res) => {
   const isValid = verifyMoMoSignature(req.body);
 
   if (!isValid) {
@@ -44,6 +46,18 @@ router.post("/momo/ipn", (req, res) => {
     amount
   } = req.body;
 
+  // Add file
+  const data = await fs.readFile('payments.json', 'utf8');
+  const payments = JSON.parse(data);
+  payments.push({
+    orderId,
+    resultCode,
+    message,
+    amount
+  });
+  await fs.writeFile('payments.json', JSON.stringify(payments, null, 2));
+  // Add file
+
   if (resultCode === 0) {
     console.log("✅ Payment success:", {
       orderId,
@@ -58,6 +72,11 @@ router.post("/momo/ipn", (req, res) => {
   return res.status(200).json({
     message: "IPN received"
   });
+});
+
+router.get("/", async (req, res) => {
+  const data = await fs.readFile('payments.json', 'utf8');
+  res.json(JSON.parse(data));
 });
 
 module.exports = router;

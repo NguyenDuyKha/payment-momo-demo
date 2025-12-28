@@ -1,0 +1,14 @@
+[
+  {
+    "orderId": "ABC1234",
+    "resultCode": 0,
+    "message": "Success",
+    "amount": 1
+  },
+  {
+    "orderId": "MOMO1766921801829",
+    "resultCode": 0,
+    "message": "Successful.",
+    "amount": 50000
+  }
+]
