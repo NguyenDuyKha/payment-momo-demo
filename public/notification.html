@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <title>Payment Result</title>
@@ -16,7 +17,7 @@
       background: white;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
@@ -55,6 +56,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="card">
@@ -100,7 +102,26 @@
     function goHome() {
       window.location.href = "/";
     }
+
+    async function pollStatus(orderId) {
+      const res = await fetch(`/api/payment/momo/status/${orderId}`);
+      const data = await res.json();
+
+      if (data.status === "SUCCESS") {
+        alert("✅ Thanh toán thành công!");
+      }
+
+      if (data.status === "FAILED") {
+        alert("❌ Thanh toán thất bại!");
+      }
+    }
+
+    if (orderId) {
+      pollStatus(orderId);
+    }
+
   </script>
 
 </body>
+
 </html>

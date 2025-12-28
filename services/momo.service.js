@@ -66,4 +66,18 @@ function createPayment(amount) {
   });
 }
 
-module.exports = { createPayment };
+
+function createQuerySignature(orderId) {
+  const raw =
+    `accessKey=${config.accessKey}` +
+    `&orderId=${orderId}` +
+    `&partnerCode=${config.partnerCode}` +
+    `&requestId=${orderId}`;
+
+  return crypto
+    .createHmac("sha256", config.secretKey)
+    .update(raw)
+    .digest("hex");
+}
+
+module.exports = { createPayment, createQuerySignature };
