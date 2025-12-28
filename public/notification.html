@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      padding: 40px;
+    }
+
+    .card {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .success {
+      color: #16a34a;
+    }
+
+    .fail {
+      color: #dc2626;
+    }
+
+    .row {
+      margin: 10px 0;
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #ec4899;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #db2777;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2 id="status"></h2>
+
+    <div class="row"><span class="label">Order ID:</span> <span id="orderId"></span></div>
+    <div class="row"><span class="label">Amount:</span> <span id="amount"></span></div>
+    <div class="row"><span class="label">Message:</span> <span id="message"></span></div>
+    <div class="row"><span class="label">Transaction ID:</span> <span id="transId"></span></div>
+    <div class="row"><span class="label">Pay Type:</span> <span id="payType"></span></div>
+
+    <button onclick="goHome()">Back to Home</button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const resultCode = params.get("resultCode");
+    const amount = params.get("amount");
+    const orderId = params.get("orderId");
+    const message = params.get("message");
+    const transId = params.get("transId");
+    const payType = params.get("payType");
+
+    document.getElementById("orderId").innerText = orderId || "-";
+    document.getElementById("amount").innerText = amount
+      ? Number(amount).toLocaleString() + " VND"
+      : "-";
+    document.getElementById("message").innerText = message || "-";
+    document.getElementById("transId").innerText = transId || "-";
+    document.getElementById("payType").innerText = payType || "-";
+
+    const statusEl = document.getElementById("status");
+
+    if (resultCode === "0") {
+      statusEl.innerText = "✅ Payment Successful";
+      statusEl.classList.add("success");
+    } else {
+      statusEl.innerText = "❌ Payment Failed";
+      statusEl.classList.add("fail");
+    }
+
+    function goHome() {
+      window.location.href = "/";
+    }
+  </script>
+
+</body>
+</html>
