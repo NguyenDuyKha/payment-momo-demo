@@ -47,7 +47,7 @@ router.post("/momo/ipn", async (req, res) => {
   } = req.body;
 
   // Add file
-  const data = await fs.readFile('payments.json', 'utf8');
+  const data = await fs.readFile('../payments.json', 'utf8');
   const payments = JSON.parse(data);
   payments.push({
     orderId,
@@ -55,7 +55,7 @@ router.post("/momo/ipn", async (req, res) => {
     message,
     amount
   });
-  await fs.writeFile('payments.json', JSON.stringify(payments, null, 2));
+  await fs.writeFile('../payments.json', JSON.stringify(payments, null, 2));
   // Add file
 
   if (resultCode === 0) {
@@ -75,7 +75,7 @@ router.post("/momo/ipn", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const data = await fs.readFile('payments.json', 'utf8');
+  const data = await fs.readFile('../payments.json', 'utf8');
   res.json(JSON.parse(data));
 });
 
